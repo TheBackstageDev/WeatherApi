@@ -41,8 +41,6 @@ async function getJson() {
 
 function weather(current) {
     switch(current) {
-        case 1000:
-            return '/images/clear.png';
         case 1003:
         case 1006:
         case 1009:
@@ -75,6 +73,7 @@ function weather(current) {
         case 1279:
         case 1282:
             return '/images/snow.png'
+        case 1000:
         default:
             return '/images/clear.png'
     }

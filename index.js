@@ -26,7 +26,6 @@ async function getJson() {
             return response.json()
         })
         .then(data => {
-            console.log(data);
             const info = JSON.stringify(data);
             const parsed_data = JSON.parse(info);
             

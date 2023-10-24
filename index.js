@@ -9,37 +9,34 @@ const weather_box = document.querySelector('.weather');
 const current_weather = document.querySelector('.current-weather');
 
 async function getJson() {
-    const city = await inputtext.value;
+    const city = inputtext.value;
 
     if (city === '') {
         return;
     }
     const website = `http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${city}`;
-    
-    fetch(website)
-        .then(response => {
-            inputtext.value = '';
-            if (!response.ok) {
-                weather_box.style.display = 'none';
-                throw new Error('Error with the following status: ' + response.status, alert('City not Found ' + response.status));
-            }
-            return response.json()
-        })
-        .then(data => {
-            const info = JSON.stringify(data);
-            const parsed_data = JSON.parse(info);
-            
-            temp_box.innerText = parsed_data.current.temp_c + '°c';
-            city_box.innerText = `${parsed_data.location.name} , ${parsed_data.location.country}`;
-            wind_box.innerText = parsed_data.current.wind_kph + 'kph';
-            humidity_box.innerText = parsed_data.current.humidity + '%';
-            current_weather.innerText = parsed_data.current.condition.text;
-            weather_icon.src = weather(parsed_data.current.condition.code);
-            weather_box.style.display = 'block';
-        })
-        .catch(error => {
-            console.error(error);
-        });
+
+    try{
+        const response = await fetch(website);
+
+        inputtext.value = '';
+        if (!response.ok) {
+            weather_box.style.display = 'none';
+            throw new Error('City not found');
+        }
+
+        const data = await response.json();
+        temp_box.innerText = data.current.temp_c + '°c';
+        city_box.innerText = `${data.location.name} , ${data.location.country}`;
+        wind_box.innerText = data.current.wind_kph + 'kph';
+        humidity_box.innerText = data.current.humidity + '%';
+        current_weather.innerText = data.current.condition.text;
+        weather_icon.src = weather(data.current.condition.code);
+        weather_box.style.display = 'block';
+    }
+    catch (error){
+        console.error(error);
+    }
 }
 
 function weather(current) {

@@ -79,6 +79,8 @@ function weather(current) {
         case 1279:
         case 1282:
             return '/images/snow.png'
+        default:
+            return '/images/clear.png'
     }
 }
 
